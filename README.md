@@ -14,4 +14,4 @@
 |     |      | Comp A Lower       | Sepal Length Lower  |
 |     |      | Comp A Higher      | Sepal Length Higher |
 |     |      | Comp B Lower       |                     |
-|     |      | Comp B Higher      |                     |
+|     |      | Comp B Higher      | Final Result        |
