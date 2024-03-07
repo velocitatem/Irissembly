@@ -1,5 +1,5 @@
 thresh = 0x104
-test = 0x12C
+test = 0x1e
 
 def lower_upper_split(any_number):
     lower = any_number & 0xFF
@@ -26,12 +26,11 @@ else:
 def a_lt_b(a, b):
     a_l, a_u = lower_upper_split(a)
     b_l, b_u = lower_upper_split(b)
-    print(a_l, a_u, b_l, b_u)
     if a_u < b_u:
         return True
     elif a_u > b_u:
         return False
-    if kj
+    if a_l < b_l:
         return a_l < b_l
 import random
 size = 10000
