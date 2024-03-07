@@ -137,12 +137,13 @@ ptl_gt_495:
 ;; TODO : validate if this is the correct target class mapping
 ;; |   |   |--- petal length (cm) >  4.95
     LDI R31, 3
-    rjmp end
+    RET
 
 ptl_lt_495:
 ;; |   |   |--- petal length (cm) <= 4.95
     LDI R31, 2
-    rjmp end
+    RET
+
 
 ptl_gt_175:
     ;; |   |--- petal width (cm) >  1.75
@@ -160,12 +161,12 @@ ptl_gt_485:
     ;; |   |   |--- petal length (cm) >  4.85
 ;;;  result branch
     LDI R31, 3
-    rjmp end
+    RET
 
 ptl_lt_485:
     ;; |   |   |--- petal length (cm) <= 4.85
     LDI R31, 2
-    rjmp end
+    RET
 
 
 end:
