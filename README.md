@@ -22,3 +22,6 @@ This table shows how the the algorithm makes use of buffers in the microchip. Th
 |     |      | Comp A Higher      | Sepal Length Higher |
 |     |      | Comp B Lower       |                     |
 |     |      | Comp B Higher      | Final Result        |
+
+
+In addition, the final classification result is written to memory at position `0x00800101`, which can be easily fetched either in program or with gdb (`(gdb) x /1x  0x00800101`).
