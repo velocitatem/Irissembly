@@ -28,8 +28,8 @@ main:
     ;; 26-7 petal width
     ;; 28-9 sepal length
 
-    ;;TODO : load inputs maybe via interupt???
-    ;; For now just a python script to generate the inputs
+    ;; For the sake of simulating the AVR this is the simplest way to pass the inputs
+    ;; For a live implementation, one could read data straight from inputs
     .equ petal_length, 0x1d6
     .equ petal_width, 0x8c
     .equ sepal_length, 0x2bc
@@ -53,8 +53,8 @@ main:
     CP R19, 0
     BRNE ptl_gt_260             ; means input > threshold
     BREQ ptl_lt_260             ; means input <= threshold
+    RET
 
-    rjmp end
 
 is_lower:
     ;; Inputs: A,A',B,B' (R20,R21,R22,R23) where A' and B' are the upper bytes
@@ -110,9 +110,6 @@ ptl_gt_260:
     RET
 
 
-
-
-
 ptl_lt_175:
 ;; |   |   |--- petal length (cm) <= 4.95
 ;; |   |   |   |--- class: 1 + 1
@@ -130,21 +127,17 @@ ptl_lt_175:
     BRNE ptl_gt_495             ; means input > threshold
     ;; |   |   |--- petal length (cm) <= 4.95
     BREQ ptl_lt_495             ; means input <= threshold
-
-    rjmp end  ; petal_length <= 4.95, R19 = 1
+    RET
 
 ptl_gt_495:
 ;; TODO : validate if this is the correct target class mapping
 ;; |   |   |--- petal length (cm) >  4.95
     LDI R31, 3
-    RET
-
+    RJMP classified
 ptl_lt_495:
 ;; |   |   |--- petal length (cm) <= 4.95
     LDI R31, 2
-    RET
-
-
+    RJMP classified
 ptl_gt_175:
     ;; |   |--- petal width (cm) >  1.75
     ;; |   |   |--- petal length (cm) <= 4.85
@@ -161,16 +154,24 @@ ptl_gt_485:
     ;; |   |   |--- petal length (cm) >  4.85
 ;;;  result branch
     LDI R31, 3
-    RET
-
+    RJMP classified
 ptl_lt_485:
     ;; |   |   |--- petal length (cm) <= 4.85
     LDI R31, 2
-    RET
+    RJMP classified
 
+
+classified:
+  ;; If running on a real AVR, this would be the place to output the result or store it
+  ;; for now we just write to memory
+  STS 0x00800101, R31
+  RJMP end
 
 end:
-    DEC R31 ; result is 1 based
-    ret ; return to caller
+  ;; End of program
+  RET
+
+
+
 
 .end
