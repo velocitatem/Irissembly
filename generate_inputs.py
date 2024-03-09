@@ -9,15 +9,16 @@ pl,pw,sl
 """
 # ['0x1d6', '0x8c', '0x2bc']
 pl, pw, sl = 0x1d6, 0x8c, 0x2bc
-print(hex(pl), hex(pw), hex(sl))
+def generate_gdb_commands(petal_length, petal_width, sepal_length):
+    commands = []
+    commands.append(f'set $r24 = {petal_length & 0xFF}')
+    commands.append(f'set $r25 = {(petal_length >> 8) & 0xFF}')
+    commands.append(f'set $r26 = {petal_width & 0xFF}')
+    commands.append(f'set $r27 = {(petal_width >> 8) & 0xFF}')
+    commands.append(f'set $r28 = {sepal_length & 0xFF}')
+    commands.append(f'set $r29 = {(sepal_length >> 8) & 0xFF}')
+    return commands
 
-"""
-target format string:
-    .equ petal_length, 0xea
-    .equ petal_width, 0x55
-    .equ sepal_length, 0x1e
-"""
-
-print(f".equ petal_length, {hex(pl)}")
-print(f".equ petal_width, {hex(pw)}")
-print(f".equ sepal_length, {hex(sl)}")
+commands = generate_gdb_commands(pl, pw, sl); cstring = '\n'.join(commands)
+with open('inputs.gdb', 'w') as f:
+    f.write(cstring)
