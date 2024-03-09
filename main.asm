@@ -1,4 +1,11 @@
-;;; resut register at 31
+;; This is a decision tree classifier for the iris dataset
+;; Written for the AVR architecture of the ATmega328P
+;; Written by: Daniel Alves Rosel
+;; -------------------------------------
+;; The decision tree was obtained by training a DecisionTreeClassifier from the sklearn library
+;; The classification result is primarily written to memory and under register r31, but the output_int interupt can be used to output the result to the Arduino pins 8, 9, 10
+
+
 .section .text
 .global main
 
@@ -32,7 +39,7 @@ main:
     ;; For a live implementation, one could read data straight from inputs
     .equ petal_length, 0x1d6
     .equ petal_width, 0x8c
-    .equ sepal_length, 0x2bc
+    .equ sepal_length, 0x2bc    ; under current logic this is unused but can be used for further branching => higher acc
 
 
     LDI R24, petal_length & 0xFF
@@ -41,6 +48,8 @@ main:
     LDI R27, (petal_width >> 8)
     LDI R28, sepal_length & 0xFF
     LDI R29, (sepal_length >> 8)
+    ;; Another option would be to use buffers XYZ but for operations on these values
+    ;; it is easier to use this step
 
     ldi R19, 0x0    ; Initialize result to 0
 
@@ -162,7 +171,6 @@ ptl_lt_485:
 
 
 classified:
-  ;; If running on a real AVR, this would be the place to output the result or store it
   ;; for now we just write to memory
   STS 0x00800101, R31
   RJMP end
