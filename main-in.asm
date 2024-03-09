@@ -79,7 +79,7 @@ a_is_lower:
 ptl_lt_260:
 ;; set result to 0 + 1
     LDI R31, 1
-    RET
+    RJMP classified
 
 ptl_gt_260:
 ;; |   |--- petal width (cm) <= 1.75
